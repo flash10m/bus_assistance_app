@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dhaka Bus Routes</title>
+</head>
+<body>
+    <h1>Dhaka City Bus Routes</h1>
+
+    {% for route in routes %}
+        <h3>{{ route.name }}</h3>
+        <p>{{ route.start_point }} → {{ route.end_point }}</p>
+
+        <h4>Buses:</h4>
+        <ul>
+            {% for bus in route.buses.all %}
+                <li>{{ bus.name }} ({{ bus.bus_number }})</li>
+            {% empty %}
+                <li>No buses available</li>
+            {% endfor %}
+        </ul>
+
+        <h4>Stops:</h4>
+        <ul>
+            {% for rs in route.route_stops.all %}
+                <li>{{ rs.order }}. {{ rs.stop.name }}</li>
+            {% empty %}
+                <li>No stops added yet</li>
+            {% endfor %}
+        </ul>
+
+        <hr>
+    {% endfor %}
+</body>
+</html>
