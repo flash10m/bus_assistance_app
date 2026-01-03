@@ -3,31 +3,27 @@
 <html>
 <head>
     <title>Dhaka Bus Assistance</title>
+
     <link rel="stylesheet" href="{% static 'transport/style.css' %}">
-    <link
-  rel="stylesheet"
-  href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
-/>
-<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <link rel="stylesheet"
+          href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
 
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 </head>
+
 <body>
-    
-<pre>{{ map_stops }}</pre>
-
 <div class="container">
-
     <h1>🚍 Dhaka Bus Assistance</h1>
 
-    <!-- SEARCH FORM -->
+    <!-- SEARCH -->
     <div class="search-box">
         <form method="get">
             <label>From Stop</label>
             <select name="from_stop" required>
-                <option value="">Select starting stop</option>
+                <option value="">Select start</option>
                 {% for stop in stops %}
                     <option value="{{ stop.id }}"
-                    {% if selected_from and stop.id == selected_from.id %}selected{% endif %}>
+                        {% if selected_from and stop.id == selected_from.id %}selected{% endif %}>
                         {{ stop.name }}
                     </option>
                 {% endfor %}
@@ -35,67 +31,40 @@
 
             <label>To Stop</label>
             <select name="to_stop" required>
-                <option value="">Select destination stop</option>
+                <option value="">Select destination</option>
                 {% for stop in stops %}
                     <option value="{{ stop.id }}"
-                    {% if selected_to and stop.id == selected_to.id %}selected{% endif %}>
+                        {% if selected_to and stop.id == selected_to.id %}selected{% endif %}>
                         {{ stop.name }}
                     </option>
                 {% endfor %}
             </select>
 
-            <button type="submit">Search Route</button>
+            <button type="submit">Search</button>
         </form>
     </div>
+
+    <!-- MAP -->
     <div id="map" style="height: 400px; margin-bottom: 30px;"></div>
 
-
-    <!-- SEARCH RESULTS -->
+    <!-- RESULTS -->
     {% if routes_found %}
-        <h2>Available Routes</h2>
-
         {% for item in routes_found %}
             <div class="route-card">
                 <h3>{{ item.route.name }}</h3>
+                <p class="fare">Fare: {{ item.fare }} BDT</p>
 
-                <p><strong>Buses:</strong></p>
                 <ul>
                     {% for bus in item.route.buses.all %}
                         <li>{{ bus.name }} ({{ bus.bus_number }})</li>
                     {% endfor %}
                 </ul>
-
-                <p class="fare">Fare: {{ item.fare }} BDT</p>
-            </div>
-        {% endfor %}
-
-    {% elif selected_from and selected_to %}
-        <p class="no-result">
-            No routes found between {{ selected_from.name }} and {{ selected_to.name }}.
-        </p>
-
-    {% else %}
-        <!-- DEFAULT: SHOW ALL ROUTES -->
-        <h2>All Bus Routes</h2>
-
-        {% for route in routes %}
-            <div class="route-card">
-                <h3>{{ route.name }}</h3>
-                <p>{{ route.start_point }} → {{ route.end_point }}</p>
-
-                <p><strong>Buses:</strong></p>
-                <ul>
-                    {% for bus in route.buses.all %}
-                        <li>{{ bus.name }} ({{ bus.bus_number }})</li>
-                    {% empty %}
-                        <li>No buses available</li>
-                    {% endfor %}
-                </ul>
             </div>
         {% endfor %}
     {% endif %}
-
 </div>
+
+<!-- SAFE DATA TRANSFER -->
 {{ map_stops|json_script:"map-stops-data" }}
 
 <script>
@@ -106,22 +75,19 @@
     }).addTo(map);
 
     const stops = JSON.parse(
-        document.getElementById('map-stops-data').textContent
+        document.getElementById("map-stops-data").textContent
     );
 
     if (stops.length > 0) {
         let latlngs = [];
 
         stops.forEach(stop => {
-            L.marker([stop.lat, stop.lng])
-                .addTo(map)
-                .bindPopup(stop.name);
-
             latlngs.push([stop.lat, stop.lng]);
+            L.marker([stop.lat, stop.lng]).addTo(map).bindPopup(stop.name);
         });
 
-        const routeLine = L.polyline(latlngs, { color: 'blue' }).addTo(map);
-        map.fitBounds(routeLine.getBounds());
+        const line = L.polyline(latlngs, {color: "blue"}).addTo(map);
+        map.fitBounds(line.getBounds());
     }
 </script>
 
