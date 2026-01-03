@@ -1,0 +1,80 @@
+
+
+
+body {
+    font-family: Arial, sans-serif;
+    background-color: #000000;
+    margin: 0;
+    padding: 0;
+    color:#ffffff
+}
+
+.container{
+    width:90%;
+    max-width:900px;
+    margin: 30px auto;
+    background-color: #000000;
+    color:aqua
+}
+
+header {
+    text-align: center;
+    color: #1f2937;
+}
+
+.search-box lebal{
+    display: black;
+    margin-top: 10px;
+    font-weight: bold;
+}
+
+.search-box select{
+    width: 100%;
+    padding: 8px;
+    margin-top: 5px;
+}
+
+.search-box button{
+    margin-top: 15px;
+    width: 100%;
+    padding: 10px;
+    background: #2563eb;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.search-box button:hover {
+    background: #1d4ed8;
+}
+
+.route-card {
+    background: #ffffff;
+    padding: 20px;
+    border-radius: 8px;
+    margin-bottom: 20px;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.00);
+}
+
+.route-card h3 {
+    margin-top: 0;
+    color: #ffffff;
+    background-color: #000000;
+}
+
+.route-card ul {
+    padding-left: 20px;
+    background-color: #000000;
+}
+
+.fare {
+    font-weight: bold;
+    color: #047857;
+    background-color: #000000;
+}
+
+.no-result {
+    text-align: center;
+    color: #b91c1c;
+}

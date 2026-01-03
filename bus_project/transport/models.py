@@ -8,7 +8,7 @@ class Route(models.Model):
 
     def __str__(self):
         return self.name
-    
+
 class Bus(models.Model):
     name = models.CharField(max_length=100)
     bus_number = models.CharField(max_length=50)
@@ -19,6 +19,8 @@ class Bus(models.Model):
     
 class Stop(models.Model):
     name = models.CharField(max_length=100)
+    latitude = models.FloatField()
+    longitude = models.FloatField()
 
     def __str__(self):
         return self.name
